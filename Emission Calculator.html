@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carbon Emission Calculator</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+    body {
+      background-image: url(EC-background2.jpg);
+      background-size: cover;
+      font-family: 'Lexend Deca', sans-serif;
+      font-weight: 700;
+      margin: 0;
+      /* display: flex; */
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      /* background-color: #f5f5f5; */
+      /* background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(34,57,199,1) 35%, rgba(0,212,255,1) 100%); */
+    }
+ 
+    .container {
+      display: flex;
+      justify-content: space-between;
+      max-width: 900px;
+      /* background: rgba(122, 122, 122, 0.5); */
+      background: rgba(150, 150, 150, 0.5);
+      border-radius: 5px; 
+      padding: 40px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .calculator select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .calculator,
+    .fuel-efficiency {
+      flex-basis: 45%;
+    }
+    .fuel-efficiency{
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .calculator label,
+    .fuel-efficiency label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .calculator input[type="number"],
+    .fuel-efficiency input[type="number"] {
+      width: 100%;
+      padding: 10px 1px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .calculator button,
+    .fuel-efficiency button {
+        width: 70%;
+        border-radius: 3px;
+        margin-top: 30px;
+        padding: 10px;
+        border: 0;
+        background-color: #339933;
+        color: #ffffff;
+        font-weight: Bold;
+        transition: all 0.5s;
+        -webkit-transition: all 0.5s;
+    }
+
+    .calculator button:hover,
+    .fuel-efficiency button:hover {
+      background-color: #006600;
+      background-color: #006600;
+      box-shadow: 0 0 20px #C0C0C0;
+      transform: scale(1.1);
+    }
+
+    .calculator button:active,
+    .fuel-efficiency button:active {
+        background-color: #006600;
+        transition: all 0.25s;
+        -webkit-transition: all 0.25s;
+        box-shadow: none;
+        transform: scale(0.98);
+    }
+
+    .result {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .fuel-efficiency {
+      /* background-color: rgba(122, 122, 122, 0.5); */
+      background-color: rgba(140, 140, 140, 0.5);
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <center>
+  <div class="logo">
+    <img style="padding-top: 15px;" height="80px" src="Logo.png"><br>
+  </div>
+  <br>
+  <div class="container">
+    <div class="calculator">
+      <h1>Carbon Emission Calculator</h1>
+
+      <label for="distance">Distance (in kilometers):</label>
+      <input style="width: 370px;" type="number" id="distance" placeholder="Enter Distance">
+
+      <label for="fuelEfficiency">Fuel Efficiency (in liters per 100 km):</label>
+      <input style="width: 370px;" type="number" id="fuelEfficiency" placeholder="Enter Fuel Efficiency">
+
+      <label for="fuelType">Fuel Type:</label>
+      <select style="width: 370px;" id="fuelType">
+        <option value="gasoline">Gasoline</option>
+        <option value="diesel">Diesel</option>
+      </select>
+
+      <button style="width: 370px;" onclick="calculateEmissions()">Calculate</button>
+
+      <div class="result" id="result"></div>
+    </div>
+
+    <div class="fuel-efficiency">
+      <h1>Fuel Efficiency Calculator</h1>
+
+      <label for="fuelUsed">Fuel Used (in liters):</label>
+      <input style="width: 340px;" type="number" id="fuelUsed" placeholder="Enter Fuel used">
+
+      <label for="distanceTraveled">Distance Travelled (in kilometers):</label>
+      <input style="width: 340px;" type="number" id="distanceTraveled" placeholder="Enter Distance Travelled">
+
+      <button style="width: 340px;" onclick="calculateFuelEfficiency()">Calculate</button>
+
+      <div class="result" id="fuelEfficiencyResult"></div>
+    </div>
+  </center>
+  </div>
+
+  <script>
+    var CO2_PER_TREE = 21.77; // kilograms
+
+    function calculateEmissions() {
+      var distance = document.getElementById('distance').value;
+      var fuelEfficiency = document.getElementById('fuelEfficiency').value;
+      var fuelType = document.getElementById('fuelType').value;
+
+      // Perform the calculation here based on the input values
+      var emissions;
+      if (fuelType === 'gasoline') {
+        emissions = (distance * fuelEfficiency * 2.31) / 1000;
+      } else if (fuelType === 'diesel') {
+        emissions = (distance * fuelEfficiency * 2.68) / 1000;
+      }
+
+      var treesDestroyed = emissions / CO2_PER_TREE;
+
+      document.getElementById('result').innerHTML = 'Total Carbon Emissions: ' + emissions.toFixed(2) + ' kg';
+      document.getElementById('trees').innerHTML = 'Number of Trees Destroyed: ' + treesDestroyed.toFixed(2);
+    }
+
+    function calculateFuelEfficiency() {
+      var fuelUsed = document.getElementById('fuelUsed').value;
+      var distanceTraveled = document.getElementById('distanceTraveled').value;
+
+      var fuelEfficiency = (fuelUsed / distanceTraveled) * 100;
+
+      document.getElementById('fuelEfficiencyResult').innerHTML = 'Fuel Efficiency: ' + fuelEfficiency.toFixed(2) + ' liters per 100 km';
+    }
+  </script>
+</body>
+</html>
